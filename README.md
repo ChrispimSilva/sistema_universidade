@@ -19,7 +19,8 @@ Diminuir processos manuais e retrabalhos
 ## Protótipo Figma
 Foi criado um protótipo navegável apresentando todas as funcionalidades principais, garantindo um alinhamento entre a modelagem teórica e a interface.  
 Protótipo foi desenvolvido no Figma, para acessá-lo utilize o link abaixo:  
-https://www.figma.com/design/uNgxBlhXvgOSBkc4ctcKcQ/Projeto-Integrador?node-id=0-1&t=eMkbbJLh4YUMrQEv-1  
+
+[https://www.figma.com/design/uNgxBlhXvgOSBkc4ctcKcQ/Projeto-Integrador?node-id=1-3&t=n10rhDwTikA5TJYo-1](https://www.figma.com/design/uNgxBlhXvgOSBkc4ctcKcQ/Projeto-Integrador?node-id=1-3&t=n10rhDwTikA5TJYo-1) 
 
 ## Funcionalidades Prototipadas
 Cadastro de Pessoas Físicas  
