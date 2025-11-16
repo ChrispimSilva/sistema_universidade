@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Cadastro de Aluno</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="topbar"><div class="title">Sistema Universidade</div></div>
+  <main class="main">
+    <section class="menu" aria-hidden="true"></section>
+    <section class="formwrap">
+      <a class="backbtn" href="index.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="#0b5586" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Voltar</a>
+
+      <div class="formcard">
+        <h2>Cadastro de Aluno</h2>
+
+        <div id="docPendentes" class="message warn">Documentação incompleta. Aluno ficará PENDENTE até entrega total.</div>
+        <div id="exAlunoReativado" class="message success">CPF pertence a ex-aluno. Cadastro reativado com histórico aproveitado.</div>
+        <div id="cursoLotado" class="message warn">Curso sem vagas. Matrícula registrada como LISTA DE ESPERA.</div>
+        <div id="successMsg" class="message success">Aluno cadastrado com sucesso! Matrícula: <span id="idMatricula"></span></div>
+
+        <form id="formAluno" method="POST" action="/api/alunos" class="form-grid" enctype="multipart/form-data">
+          <div class="full">
+            <label class="field">CPF *</label>
+            <input class="input" id="cpf" name="cpf" required placeholder="Digite o CPF do aluno">
+            <button type="button" class="cep-btn" id="btnBuscarPF" style="margin-top:10px">Buscar Pessoa Física</button>
+          </div>
+
+          <div>
+            <label class="field">Curso *</label>
+            <select class="input" id="curso" name="curso" required>
+              <option value="">Selecione...</option>
+              <option value="ads">Análise e Desenvolvimento de Sistemas</option>
+              <option value="eng">Engenharia</option>
+              <option value="adm">Administração</option>
+              <option value="dir">Direito</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="field">Período *</label>
+            <select class="input" id="periodo" name="periodo" required>
+              <option value="">Selecione...</option><option value="matutino">Matutino</option><option value="vespertino">Vespertino</option><option value="noturno">Noturno</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="field">Número de Matrícula *</label>
+            <input class="input" id="matricula" name="matricula" required placeholder="Ex.: 2025-ALUNO-0001">
+          </div>
+
+          <div class="full">
+            <label class="field">Contato de Emergência *</label>
+            <input class="input" name="contatoEmergencia" required placeholder="Nome e telefone">
+          </div>
+
+          <div class="full">
+            <label class="field">Documentos Acadêmicos (Histórico / Certificado) *</label>
+            <input class="input" type="file" id="docAcad" accept=".pdf,.jpg,.png" required>
+          </div>
+
+          <div class="full"><button class="btn" type="submit">Salvar Cadastro</button></div>
+        </form>
+
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+	<div class="logo">
+		<img src="https://www.ead.senac.br/public/assets/img/logo.png" 
+			width="110" 
+			height="32" 
+			alt="Logo Senac">
+	</div>
+    <div class="credits">Equipe Projeto Integrador:<br>
+		Anderson Chrispim da Silva<br>
+		André Zicatti Leite<br>
+		Diego Eiji de Menezes<br>
+		Flavia R M Biagioni<br>
+		Gustavo Lopes<br>
+	</div>
+  </footer>
+
+<script src="form.js"></script>
+<script>
+document.getElementById("btnBuscarPF").addEventListener("click", function(){
+  const cpf = document.getElementById("cpf").value.trim();
+  const pfMsg = document.getElementById("exAlunoReativado");
+  pfMsg.style.display="none";
+  if(!cpf){ alert('Informe um CPF válido'); return; }
+  if(cpf === "11111111111"){ document.getElementById("exAlunoReativado").style.display="block"; return; }
+  if(cpf === "00000000000"){ document.getElementById("docPendentes").style.display="block"; return; }
+  alert('Pessoa Física encontrada! Continue o cadastro.');
+});
+
+document.getElementById("formAluno").addEventListener("submit", async function(e){
+  e.preventDefault();
+  document.getElementById("docPendentes").style.display="none";
+  document.getElementById("cursoLotado").style.display="none";
+  document.getElementById("successMsg").style.display="none";
+
+  const docAcad = document.getElementById("docAcad").value;
+  const curso = document.getElementById("curso").value;
+  const form = e.target;
+
+  if(!docAcad){ document.getElementById("docPendentes").style.display="block"; return; }
+  if(curso === "adm"){ document.getElementById("cursoLotado").style.display="block"; }
+
+  const novaMatricula = "MAT-" + Math.floor(Math.random()*90000 + 10000);
+  document.getElementById("idMatricula").textContent = novaMatricula;
+  document.getElementById("successMsg").style.display="block";
+
+  try{ await postForm(form, 'http://localhost:8080/api/alunos'); }
+  catch(err){ console.error('Erro envio aluno', err); }
+
+  form.reset();
+});
+</script>
+</body>
+</html>

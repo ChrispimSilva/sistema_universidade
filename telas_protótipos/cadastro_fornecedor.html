@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Cadastro de Fornecedor</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="topbar"><div class="title">Sistema Universidade</div></div>
+  <main class="main">
+    <section class="menu" aria-hidden="true"></section>
+    <section class="formwrap">
+      <a class="backbtn" href="index.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="#0b5586" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Voltar</a>
+
+      <div class="formcard">
+        <h2>Cadastro de Fornecedor</h2>
+
+        <div id="docIncompleto" class="message warn">Documentação incompleta. Pagamentos permanecerão bloqueados.</div>
+        <div id="regularidadeNegada" class="message error">Verificação fiscal externa retornou irregularidade. Cadastro suspenso.</div>
+        <div id="erroUpload" class="message error">Falha no upload dos documentos. Reenvie sem perder os dados.</div>
+        <div id="successMsg" class="message success">Fornecedor cadastrado com sucesso! Status: Em Análise. ID: <span id="idRetorno"></span></div>
+
+        <form id="formFornecedor" method="POST" action="/api/fornecedores" class="form-grid" enctype="multipart/form-data">
+          <div class="full">
+            <label class="field">CNPJ da Empresa *</label>
+            <input class="input" id="cnpj" name="cnpj" required placeholder="00000000000100">
+            <button type="button" class="cep-btn" id="btnVerificarFiscal" style="margin-top:10px">Verificar Regularidade</button>
+          </div>
+
+          <div>
+            <label class="field">Banco *</label><input class="input" name="banco" required>
+          </div>
+
+          <div>
+            <label class="field">Agência *</label><input class="input" name="agencia" required>
+          </div>
+
+          <div class="full">
+            <label class="field">Conta *</label><input class="input" name="conta" required>
+          </div>
+
+          <div class="full">
+            <label class="field">Contrato Social (PDF) *</label>
+            <input class="input" type="file" id="contrato" accept=".pdf" required>
+          </div>
+
+          <div class="full">
+            <label class="field">Comprovante de endereço *</label>
+            <input class="input" type="file" id="enderecoDoc" accept=".pdf,.jpg,.png" required>
+          </div>
+
+          <div class="full">
+            <label class="field">Outros Documentos</label>
+            <input class="input" type="file" id="outrosDoc" multiple>
+          </div>
+
+          <div class="full"><button class="btn" type="submit">Salvar Cadastro</button></div>
+        </form>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+	<div class="logo">
+		<img src="https://www.ead.senac.br/public/assets/img/logo.png" 
+			width="110" 
+			height="32" 
+			alt="Logo Senac">
+	</div>
+    <div class="credits">Equipe Projeto Integrador:<br>
+		Anderson Chrispim da Silva<br>
+		André Zicatti Leite<br>
+		Diego Eiji de Menezes<br>
+		Flavia R M Biagioni<br>
+		Gustavo Lopes<br>
+	</div>
+  </footer>
+   	
+<script src="form.js"></script>
+<script>
+document.getElementById("btnVerificarFiscal").addEventListener("click", function(){
+  const cnpj = document.getElementById("cnpj").value.trim();
+  if(cnpj === "22222222000100"){ document.getElementById("regularidadeNegada").style.display="block"; return; }
+  document.getElementById("regularidadeNegada").style.display="none";
+  alert('Empresa regularizada! Continue o cadastro.');
+});
+
+document.getElementById("formFornecedor").addEventListener("submit", async function(e){
+  e.preventDefault();
+  document.getElementById("docIncompleto").style.display="none";
+  document.getElementById("regularidadeNegada").style.display="none";
+  document.getElementById("erroUpload").style.display="none";
+  document.getElementById("successMsg").style.display="none";
+
+  const contrato = document.getElementById("contrato").value;
+  const enderecoDoc = document.getElementById("enderecoDoc").value;
+  const form = e.target;
+
+  if(!contrato || !enderecoDoc){ document.getElementById("docIncompleto").style.display="block"; return; }
+  if(contrato.endsWith("erro.pdf")){ document.getElementById("erroUpload").style.display="block"; return; }
+
+  const idFake = "FORN-" + Math.floor(Math.random()*900000 + 100000);
+  document.getElementById("idRetorno").textContent = idFake;
+  document.getElementById("successMsg").style.display="block";
+
+  try {
+    // Note: form has files; postForm sends JSON. For file uploads you'd implement a separate fetch with FormData.
+    // For simplicity we send metadata to backend
+    await postForm(form, 'http://localhost:8080/api/fornecedores');
+  } catch(err){ console.error('Erro envio fornecedor', err); }
+
+  form.reset();
+});
+</script>
+</body>
+</html>
