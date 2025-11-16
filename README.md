@@ -39,6 +39,7 @@ Figma
 Análise e Modelagem de sistemas  
 Metodologia de orientação a objetos  
 
+
 ## Referências
 GAMMA, Erich et al. Padrões de projeto: soluções reutilizáveis de software orientado a objetos. Porto Alegre: Bookman, 2007.  
 LARMAN, Craig. Utilizando UML e padrões: uma introdução à análise e ao projeto orientados a objetos e desenvolvimento iterativo. Porto Alegre: Bookman, 2011.  
