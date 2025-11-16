@@ -46,6 +46,7 @@ CREATE TABLE university.endereco (
   logradouro VARCHAR(255),
   numero VARCHAR(20),
   complemento VARCHAR(255),
+  bairro VARCHAR(50),
   cidade VARCHAR(100),
   estado VARCHAR(50),
   cep VARCHAR(20)
