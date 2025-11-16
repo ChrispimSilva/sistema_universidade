@@ -45,4 +45,4 @@ Metodologia de orientação a objetos
 GAMMA, Erich et al. Padrões de projeto: soluções reutilizáveis de software orientado a objetos. Porto Alegre: Bookman, 2007.  
 LARMAN, Craig. Utilizando UML e padrões: uma introdução à análise e ao projeto orientados a objetos e desenvolvimento iterativo. Porto Alegre: Bookman, 2011.  
 SOMMERVILLE, Ian. Engenharia de software. 9. ed. São Paulo: Pearson, 2011.   
-Editar...
+
